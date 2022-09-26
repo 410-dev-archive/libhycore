@@ -21,7 +21,17 @@ public class CoreLogger {
     }
 
     public static void debug(EventType eventType, String message) {
-        if (printDebug) print(eventType, message);
+        if (printDebug) {
+            StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
+            String callerClass = ste.getClassName();
+            String time = CoreDate.timestamp();
+            String s = "[" + time + "] [" + callerClass + "] [" + eventType.toString() + "] " + message;
+            if (eventType.equals(EventType.ERROR)) {
+                System.err.println(s);
+            }else{
+                System.out.println(s);
+            }
+        }
     }
 
     public static void setDebugPrinting(boolean printDebug) {
